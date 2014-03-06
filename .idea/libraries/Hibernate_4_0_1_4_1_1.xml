@@ -1,0 +1,19 @@
+<component name="libraryTable">
+  <library name="Hibernate 4.0.1-4.1.1" type="hibernate">
+    <properties version="4.1.1" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/4.1.1/jboss-transaction-api_1.1_spec-1.0.0.Final.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/4.1.1/jboss-logging-3.1.0.GA.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/4.1.1/hibernate-jpa-2.0-api-1.0.1.Final.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/4.1.1/hibernate-commons-annotations-4.0.1.Final.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/4.1.1/antlr-2.7.7.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/4.1.1/javassist-3.15.0-GA.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/4.1.1/dom4j-1.6.1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/hibernate/hibernate-core/4.1.1/hibernate-core-4.1.1.Final.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.ideaLibSources/hibernate-core-4.1.1.Final-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
