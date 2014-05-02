@@ -19,11 +19,12 @@ public class SNP {
     String name;
     @Column
     String chromosome;
-    @Column
+    @Column(length=1000)
     String sequence;
 
 
     @ManyToOne
+    @JoinColumn( nullable = false)
     SNPFile snpFile;
 
 
@@ -70,9 +71,7 @@ public class SNP {
         this.sequence = sequence;
     }
 
-
-       public Long getSnpId() { return snpId; }
-
+    public Long getSnpId() { return snpId; }
 
     public void setSnpId(Long id) {
         this.snpId = id;
@@ -83,4 +82,5 @@ public class SNP {
        return new SNP(elements[0], elements[1], elements[2], sf);
 
     }
+
 }
