@@ -14,10 +14,10 @@
 
 
   <h2>File submitted</h2>
-  <h3>
-      File name : "<strong> ${message}</strong>" uploaded.
-      You will recieve an email when the primers are ready.
-  </h3>
+
+  File name : "<strong> ${message}</strong>" uploaded.
+  You will receive an email when the primers are ready.
+  See the status of your request <a href="status?id=${id}">here</a>
 
 
 </body>

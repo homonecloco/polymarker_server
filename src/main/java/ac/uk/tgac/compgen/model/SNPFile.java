@@ -52,8 +52,10 @@ public class SNPFile {
         while ((line = in.readLine()) != null) {
             //responseData.append(line);
             System.out.println(line);
-            SNP.SNPFromLine(line, sf);
-            sf.add(SNP.SNPFromLine(line, sf));
+            SNP snp = SNP.SNPFromLine(line, sf);
+            if(snp != null){
+                sf.add(snp);
+            }
         }
         return sf;
     }
@@ -120,7 +122,7 @@ public class SNPFile {
     }
 
     public enum Status {
-       NEW, SUBMITTED, RUNNING, DONE, ERROR
+       NEW, SUBMITTED, RUNNING, DONE, ERROR, NOTIFIED
     }
 
     @OneToMany(mappedBy = "snpFile")

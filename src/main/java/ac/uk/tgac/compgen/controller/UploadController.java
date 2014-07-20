@@ -34,7 +34,7 @@ public class UploadController {
     @Autowired
     ServletContext context;
 
-    @RequestMapping("/fileUploadForm")
+    @RequestMapping("/")
     public ModelAndView getUploadForm(
             @ModelAttribute("uploadedFile") UploadedFile uploadedFile,
             BindingResult result) {
@@ -74,7 +74,8 @@ public class UploadController {
         if (result.hasErrors()) {
             return new ModelAndView("uploadForm");
         }
-
+        SNPFile sf = null;
+        Long id_saved = 0L;
         try {
             inputStream = file.getInputStream();
             org.hibernate.internal.SessionFactoryImpl sessionFactory = (org.hibernate.internal.SessionFactoryImpl) context.getAttribute("sessionFactory");
@@ -82,23 +83,20 @@ public class UploadController {
 
             Transaction transaction = session.getTransaction();
             transaction.begin();
-            SNPFile sf = SNPFile.parseStream(inputStream);
+            sf = SNPFile.parseStream(inputStream);
             sf.setFilename(fileName);
             sf.setEmail(uploadedFile.getEmail());
-            Long id_saved = (Long) session.save(sf);
-            //sf.setId(id_saved);
+            id_saved = (Long) session.save(sf);
 
-            //           for (SNP s: sf.getSnpList()){
-//                session.save(s);
-            //          }
             transaction.commit();
 
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        return new ModelAndView("showFile", "message", fileName);
+        ModelAndView mv = new ModelAndView("showFile", "message", fileName);
+        mv.addObject("id", id_saved);
+        return mv;
     }
 
     @RequestMapping (value = "/get_file", method = {RequestMethod.POST, RequestMethod.GET})

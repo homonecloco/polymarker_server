@@ -79,8 +79,13 @@ public class SNP {
 
     public static SNP SNPFromLine(String line, SNPFile sf){
        String[] elements = line.split(",");
-       return new SNP(elements[0], elements[1], elements[2], sf);
-
+        SNP snp = null;
+       try {
+            snp =  new SNP(elements[0], elements[1], elements[2], sf) ;
+       }catch (Exception e){
+          e.printStackTrace();
+       }
+       return snp;
     }
 
 }
