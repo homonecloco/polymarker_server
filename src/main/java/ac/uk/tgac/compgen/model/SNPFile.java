@@ -33,7 +33,7 @@ public class SNPFile {
     @Column
     String email;
     @OneToMany( cascade={CascadeType.ALL})
-    List<SNP> snpList;
+    List<  SNP> snpList;
     @Column(length = 65535,columnDefinition="Text")
     private String polymarker_output;
     @Column(length = 65535,columnDefinition="Text")

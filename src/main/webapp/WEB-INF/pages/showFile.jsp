@@ -8,14 +8,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-<title>Being Java Guys | Hello World</title>
+<title>Polymarker</title>
 </head>
 <body>
 
 
-  <h2>Being Java Guys | Hello World</h2>
+  <h2>File submitted</h2>
   <h3>
-   File name : "<strong> ${message}</strong>" uploaded successfully !
+      File name : "<strong> ${message}</strong>" uploaded.
+      You will recieve an email when the primers are ready.
   </h3>
 
 

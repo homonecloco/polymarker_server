@@ -5,6 +5,7 @@ package ac.uk.tgac.compgen.controller;
  */
 
 import java.io.*;
+import java.util.Map;
 
 import ac.uk.tgac.compgen.model.SNP;
 import ac.uk.tgac.compgen.model.SNPFile;
@@ -14,8 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -24,6 +24,7 @@ import ac.uk.tgac.compgen.model.UploadedFile;
 import ac.uk.tgac.compgen.validator.FileValidator;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class UploadController {
@@ -38,6 +39,24 @@ public class UploadController {
             @ModelAttribute("uploadedFile") UploadedFile uploadedFile,
             BindingResult result) {
         return new ModelAndView("uploadForm");
+    }
+
+    @RequestMapping (value = "/status", method = {RequestMethod.POST, RequestMethod.GET})
+      public ModelAndView getStatus (HttpServletRequest request) {
+        Map<String, String[]> parameters = request.getParameterMap();
+        org.hibernate.internal.SessionFactoryImpl sessionFactory = (org.hibernate.internal.SessionFactoryImpl) context.getAttribute("sessionFactory");
+        Session session = sessionFactory.getCurrentSession();
+        String[] ids = parameters.get("id");
+        Long id =  Long.parseLong(ids[0]);
+        Transaction transaction = session.getTransaction();
+        transaction.begin();
+        SNPFile sf  =(SNPFile) session.get(SNPFile.class,id);
+
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("primer_status");
+        mv.addObject("sf",sf);
+        transaction.commit();
+        return mv;
     }
 
     @RequestMapping("/fileUpload")
@@ -81,5 +100,42 @@ public class UploadController {
 
         return new ModelAndView("showFile", "message", fileName);
     }
+
+    @RequestMapping (value = "/get_file", method = {RequestMethod.POST, RequestMethod.GET})
+    public ModelAndView renderPromotePage (HttpServletRequest request) {
+        Map<String, String[]> parameters = request.getParameterMap();
+
+
+        org.hibernate.internal.SessionFactoryImpl sessionFactory = (org.hibernate.internal.SessionFactoryImpl) context.getAttribute("sessionFactory");
+        Session session = sessionFactory.getCurrentSession();
+        String[] ids = parameters.get("id");
+        String[] outs = parameters.get("output");
+
+
+        Long id =  Long.parseLong(ids[0]);
+        String format = outs[0];
+
+
+        Transaction transaction = session.getTransaction();
+                   transaction.begin();
+        SNPFile sf  =(SNPFile) session.get(SNPFile.class,id);
+
+        String text;
+
+        if (format.equals("mask") ){
+                text = sf.getMask_fasta();
+        }else if(format.equals("primers")){
+            text = sf.getPolymarker_output();
+        }else{
+            text = "Invalid file";
+        }
+
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("show_file");
+        mv.addObject("text",text);
+        transaction.commit();
+        return mv;
+    }
+
 
 }
