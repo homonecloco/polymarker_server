@@ -10,20 +10,23 @@
 <html>
 <head>
 <script type="text/javascript" src="jquery-2.1.0.js"></script>
-<title>Being Java Guys | Hello World</title>
+<title>Polymarker</title>
 </head>
 <body>
 
 
   <h2>Polymarker </h2>
   <h3>Please select a file with the primers.</h3>
-  The input must be a CSV (can be exprted from excel) with the following collumns:
+  <p>
+  The input must be a CSV (can be exported from excel) with the following columns:
   primer_id,chromosome,sequence
-
-  The snp must be marked in the format: [a/t] for either A or T
-  Example:
+      <br/>
+  The SNP must be marked in the format: [a/t] for either A or T
+      <br/>
+      Example:
+      <br/>
   Primer_1,2BS,GAAAACA<b>[T/C]</b>ACGGGGGAAAA
-
+  </p>
   Polymarker takes ~1 minute per marker, once it has started. Please provide an email to send you the link with your results.
   <form:form method="post" enctype="multipart/form-data"
    modelAttribute="uploadedFile" action="fileUpload.htm">

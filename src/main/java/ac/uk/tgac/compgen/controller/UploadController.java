@@ -69,7 +69,7 @@ public class UploadController {
         MultipartFile file = uploadedFile.getFile();
         fileValidator.validate(uploadedFile, result);
 
-        String fileName = file.getOriginalFilename();
+        String fileName = file.getOriginalFilename().replaceAll(" ", "_");
 
         if (result.hasErrors()) {
             return new ModelAndView("uploadForm");

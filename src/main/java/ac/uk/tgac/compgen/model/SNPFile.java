@@ -8,10 +8,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by ramirezr on 05/03/2014.
@@ -39,6 +36,12 @@ public class SNPFile {
     @Column(length = 65535,columnDefinition="Text")
     private String mask_fasta;
 
+
+    @Column(columnDefinition = "TIMESTAMP")
+    private Date submitted;
+    @Column(columnDefinition = "TIMESTAMP on update CURRENT_TIMESTAMP")
+    private Date lastChange;
+
     public SNPFile(){
         snpList = new LinkedList<SNP>();
     }
@@ -48,6 +51,7 @@ public class SNPFile {
         BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
         SNPFile sf = new SNPFile();
         sf.setStatus(Status.NEW);
+        sf.setSubmitted(new Date());
 
         while ((line = in.readLine()) != null) {
             //responseData.append(line);
@@ -135,4 +139,20 @@ public class SNPFile {
     public void setSnp(Collection<SNP> snp) {
         this.snp = snp;
     }
+
+    public Date getSubmitted() {
+           return submitted;
+       }
+
+       public void setSubmitted(Date submitted) {
+           this.submitted = submitted;
+       }
+
+       public Date getLastChange() {
+           return lastChange;
+       }
+
+       public void setLastChange(Date lastChange) {
+           this.lastChange = lastChange;
+       }
 }

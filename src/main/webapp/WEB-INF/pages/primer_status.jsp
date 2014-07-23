@@ -25,9 +25,9 @@ The status of your file is: <strong> ${sf.status}</strong>
        Waiting to be submitted.
     </c:when>
 
-    <c:otherwise>pizzas.
+    <c:otherwise>
          Please come back later, you'll recieve an email when the primers had been designed. <br />
-         </c:otherwise>
+    </c:otherwise>
 </c:choose>
 
 
