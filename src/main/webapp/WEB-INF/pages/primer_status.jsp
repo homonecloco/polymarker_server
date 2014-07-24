@@ -9,9 +9,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
-    <title>Results for primer</title>
+    <title>Polymarker-Results</title>
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <script type="text/javascript" src="js/jquery-2.1.0.js"></script>
 </head>
-<body>
+<body id="page-wrap">
+<img class="main-header" src="images/polymarker_header.png"/>
+
+<div id="main-body">
 The status of your file is: <strong> ${sf.status}</strong>
 <br/>
 <c:choose>
@@ -29,7 +34,7 @@ The status of your file is: <strong> ${sf.status}</strong>
          Please come back later, you'll recieve an email when the primers had been designed. <br />
     </c:otherwise>
 </c:choose>
-
+</div>
 
 
 
