@@ -1,8 +1,9 @@
 package ac.uk.tgac.compgen.model;
 
-import org.hibernate.annotations.Type;
+
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by ramirezr on 05/03/2014.
@@ -22,10 +23,12 @@ public class SNP {
     @Column(length=1000)
     String sequence;
 
-
     @ManyToOne
     @JoinColumn( nullable = false)
     SNPFile snpFile;
+
+    @OneToMany( cascade={CascadeType.ALL})
+    List<SNPWarning> warnings;
 
 
     public SNPFile getSnpFile() {
@@ -79,13 +82,27 @@ public class SNP {
 
     public static SNP SNPFromLine(String line, SNPFile sf){
        String[] elements = line.split(",");
-        SNP snp = null;
+       SNP snp = null;
        try {
-            snp =  new SNP(elements[0], elements[1], elements[2], sf) ;
+           System.out.println("number of elements: " + elements.length);
+           if(elements.length == 3){
+            System.out.println(elements[0]);
+            //   System.out.println(elements[1]);
+            //   System.out.println(elements[2]);
+            String sequence = elements[2];
+            snp =  new SNP(elements[0], elements[1], sequence, sf) ;
+           }
        }catch (Exception e){
           e.printStackTrace();
        }
        return snp;
     }
 
+    public List<SNPWarning> getWarnings() {
+        return warnings;
+    }
+
+    public void setWarnings(List<SNPWarning> warnings) {
+        this.warnings = warnings;
+    }
 }

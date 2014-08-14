@@ -37,5 +37,5 @@ public class HibernateListener  implements ServletContextListener {
 
     public void contextDestroyed(ServletContextEvent sce) {
         sessionFactory.close();
-    }
+     }
 }

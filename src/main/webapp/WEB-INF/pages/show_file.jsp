@@ -1,1 +1,1 @@
-<%@ page contentType="text/text;charset=UTF-8" language="java" %>${text}
+<%@ page contentType="text/csv;charset=UTF-8" language="java" %>${text}

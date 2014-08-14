@@ -71,9 +71,9 @@
     </tr>
        <tr>
            <td>Email:</td>
-           <td><input type="text" name="email" />
+           <td><form:input path="email" id="emailInput"/>
            </td>
-           <td> </td>
+           <td> <form:errors path="email" cssclass="error"/></td>
     <tr>
      <td> </td>
      <td><input type="submit" value="Upload" />

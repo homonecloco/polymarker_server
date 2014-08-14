@@ -42,6 +42,9 @@ public class SNPFile {
     @Column(columnDefinition = "TIMESTAMP on update CURRENT_TIMESTAMP")
     private Date lastChange;
 
+    @Column
+    private String error;
+
     public SNPFile(){
         snpList = new LinkedList<SNP>();
     }
@@ -59,7 +62,9 @@ public class SNPFile {
             SNP snp = SNP.SNPFromLine(line, sf);
             if(snp != null){
                 sf.add(snp);
+
             }
+
         }
         return sf;
     }
@@ -123,6 +128,14 @@ public class SNPFile {
 
     public void setPolymarker_output(String polymarker_output) {
         this.polymarker_output = polymarker_output;
+    }
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
     }
 
     public enum Status {
