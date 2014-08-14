@@ -2,6 +2,7 @@
   <configuration default="false" name="Tomcat 7.0.501" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 7.0.501" ALTERNATIVE_JRE_ENABLED="false" ALTERNATIVE_JRE_PATH="">
     <option name="BROWSER_ID" value="Firefox" />
     <option name="START_JAVASCRIPT_DEBUGGER" value="true" />
+    <option name="COMMON_VM_ARGUMENTS" value="-Xmx256m" />
     <deployment>
       <artifact name="PrimerSpringMVC:war exploded">
         <settings>

@@ -4,6 +4,7 @@ package ac.uk.tgac.compgen.model;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Created by ramirezr on 05/03/2014.
@@ -79,23 +80,41 @@ public class SNP {
     public void setSnpId(Long id) {
         this.snpId = id;
     }
-
+    public static final String valid_bases = "ACGTURYSWKMBDHVN";
+    public static final String valid_in_snp = "ACTG";
+    public static final String snp_regex = "^[" + valid_bases + "]+\\[[" + valid_in_snp + "]/["+ valid_in_snp + "]\\][" + valid_bases +"]+$\"";
+    public static Pattern iuapc_valid_bases = Pattern.compile(snp_regex);
     public static SNP SNPFromLine(String line, SNPFile sf){
        String[] elements = line.split(",");
        SNP snp = null;
        try {
            System.out.println("number of elements: " + elements.length);
+           System.out.println("Pattern for regex: " + iuapc_valid_bases.pattern());
            if(elements.length == 3){
             System.out.println(elements[0]);
             //   System.out.println(elements[1]);
             //   System.out.println(elements[2]);
             String sequence = elements[2];
+            String error_message = "";
+            if(!iuapc_valid_bases.matcher(sequence).matches()){
+                error_message = "Sequence is not a valid SNP";
+                System.out.println("Doesnt match!");
+            }
+
             snp =  new SNP(elements[0], elements[1], sequence, sf) ;
+            snp.addWarning(error_message);
            }
        }catch (Exception e){
           e.printStackTrace();
        }
        return snp;
+    }
+
+    private void addWarning(String error_message) {
+        SNPWarning snpw = new SNPWarning() ;
+        snpw.setMessage(error_message);
+        snpw.setSnp(this);
+        this.warnings.add(snpw);
     }
 
     public List<SNPWarning> getWarnings() {
