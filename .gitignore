@@ -4,6 +4,7 @@ target/
 
 #Databse in test envirnoment
 hibernate.cfg.xml
+*.tgac
 
 #OS
 .DS_Store

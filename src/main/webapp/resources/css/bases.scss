@@ -1,0 +1,12 @@
+$normalOpacity: 0.3;
+$selectedOpacity: 1.0;
+$schemeName: nucleic1;
+$residues: (
+A: #ad0052,
+C: #c2003d,
+G: #6a0095,
+T: #61009e,
+Gap: #fff,
+);
+
+@import "select_builder"
