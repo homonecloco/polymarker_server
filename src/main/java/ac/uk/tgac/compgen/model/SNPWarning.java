@@ -15,7 +15,7 @@ public class SNPWarning {
     @ManyToOne
     @JoinColumn( nullable = false)
     private SNP snp;
-
+    @Column(length = 65535,columnDefinition="Text")
     private String message;
 
     public SNP getSnp() {

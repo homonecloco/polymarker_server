@@ -86,9 +86,6 @@ public class UploadController {
         Long id_saved = 0L;
         try {
             inputStream = file.getInputStream();
-
-
-
             sf = SNPFile.parseStream(inputStream);
             sf.setFilename(fileName);
             sf.setEmail(uploadedFile.getEmail());

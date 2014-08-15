@@ -53,6 +53,7 @@
             We have not seen improvement in performance with longer sequences; therefore we recommend 200-bp of input sequence.
             The final multiple alignment for the primer design only considers 100-bp on either side of the target varietal SNP.] </em>
     </li>
+    <li>Exonerate is used to search for the contigs which align to the SNP. By default, the miniumm identity used to match across the genomes it is 90% and the model used is est2genome. </li>
     <li>Please provide an email to send the link with your results.</li>
 </ul>
 </p>
@@ -95,9 +96,6 @@ Gene_2,2AL,CGATAGCATAGCATGGCGTTAGCAGT[G/C]TAGTACGATAGATCAGTACGA  <br/>
 Ta#S58861868,1AS,CATACTGATGACACGATTGGCTACSGGCCTTGAAGATAGMAGCAGAT[A/G]ACTTCAGTGTAATCCAAGTTGACTG
 </code>
 
-
-<h4>Output: primer</h4>
-The output
 
 <h4>Output: mask</h4>
 The mask contains the details of the local alignment
