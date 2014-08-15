@@ -1,5 +1,8 @@
 package ac.uk.tgac.compgen.model;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.Column;
 
 import javax.persistence.Entity;
@@ -29,8 +32,11 @@ public class SNPFile {
     String filename;
     @Column
     String email;
-    @OneToMany( cascade={CascadeType.ALL})
+
+    @OneToMany( cascade={CascadeType.ALL}, fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
     List<  SNP> snpList;
+
     @Column(length = 65535,columnDefinition="Text")
     private String polymarker_output;
     @Column(length = 65535,columnDefinition="Text")
@@ -140,17 +146,6 @@ public class SNPFile {
 
     public enum Status {
        NEW, SUBMITTED, RUNNING, DONE, ERROR, NOTIFIED
-    }
-
-    @OneToMany(mappedBy = "snpFile")
-    private Collection<SNP> snp;
-
-    public Collection<SNP> getSnp() {
-        return snp;
-    }
-
-    public void setSnp(Collection<SNP> snp) {
-        this.snp = snp;
     }
 
     public Date getSubmitted() {

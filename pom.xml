@@ -127,6 +127,12 @@
             <artifactId>hibernate-core</artifactId>
             <version>4.1.12.Final</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>13.0-final</version>
+        </dependency>
     </dependencies>
 
     <build>

@@ -1,10 +1,13 @@
 package ac.uk.tgac.compgen.model;
 
 
-
 import ac.uk.tgac.compgen.PolymarkerException;
+import com.google.common.base.Splitter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -32,7 +35,8 @@ public class SNP {
     @JoinColumn( nullable = false)
     SNPFile snpFile;
 
-    @OneToMany( cascade={CascadeType.ALL})
+    @OneToMany( cascade={CascadeType.ALL}, fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
     List<SNPWarning> warnings = new LinkedList<SNPWarning>();
 
     @Column
@@ -77,6 +81,13 @@ public class SNP {
 
     public String getSequence() {
         return sequence;
+    }
+
+    public Iterator<String> getSequenceSplitted(){
+        Iterable<String> it = Splitter.fixedLength(80).split(sequence);
+        //List<String> list = new LinkedList<String>();
+
+        return  it.iterator();
     }
 
     public void setSequence(String sequence) {
