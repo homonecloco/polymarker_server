@@ -100,12 +100,21 @@ public class UploadController {
                 org.hibernate.internal.SessionFactoryImpl sessionFactory = (org.hibernate.internal.SessionFactoryImpl) context.getAttribute("sessionFactory");
                 Session session = sessionFactory.getCurrentSession();
                 Transaction transaction = session.getTransaction();
-                transaction.begin();
-                id_saved = (Long) session.save(sf);
-                transaction.commit();
-                ModelAndView mv = new ModelAndView("showFile", "message", fileName);
-                mv.addObject("id", id_saved);
-                return mv;
+
+                try {
+                    transaction.begin();
+                    id_saved = (Long) session.save(sf);
+                    transaction.commit();
+                    ModelAndView mv = new ModelAndView("showFile", "message", fileName);
+                    mv.addObject("id", id_saved);
+                    return mv;
+                }   catch (Exception e){
+
+                    transaction.rollback();
+                    throw e;
+                }
+
+
             }
         } catch (Exception e) {
             result.rejectValue("file", "uploadForm.salectFile", e.getMessage());
