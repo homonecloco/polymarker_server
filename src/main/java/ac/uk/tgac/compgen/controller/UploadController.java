@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import org.apache.commons.io.FilenameUtils;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
@@ -50,9 +52,8 @@ public class UploadController {
         org.hibernate.internal.SessionFactoryImpl sessionFactory = (org.hibernate.internal.SessionFactoryImpl) context.getAttribute("sessionFactory");
         Session session = sessionFactory.getCurrentSession();
 
-        if(! session.getTransaction().isActive()  ){
-         session.beginTransaction();
-        }
+
+        session.beginTransaction();
         String[] ids = parameters.get("id");
         Long id =  Long.parseLong(ids[0]);
 
@@ -163,7 +164,7 @@ public class UploadController {
     }
 
     public final static String TEXT_CSV = "text/csv";
-    public final static MediaType TEXT_CSV_TYPE = new MediaType("text", "csv");
+    public final static MediaType TEXT_CSV_TYPE = new MediaType("application", "ms-excel");
     public final static MediaType TEXT_FASTA_NA_TYPE = new MediaType("chemical", "seq-na-fasta");
 
     @RequestMapping(method=RequestMethod.GET, value="/get_file")
@@ -174,7 +175,7 @@ public class UploadController {
 
 
         org.hibernate.internal.SessionFactoryImpl sessionFactory = (org.hibernate.internal.SessionFactoryImpl) context.getAttribute("sessionFactory");
-        Session session = sessionFactory.getCurrentSession();
+
         String[] ids = parameters.get("id");
         String[] outs = parameters.get("output");
 
@@ -183,24 +184,40 @@ public class UploadController {
         String format = outs[0];
 
 
-        Transaction transaction = session.getTransaction();
+        Session session = sessionFactory.getCurrentSession();
 
-        transaction.begin();
-        SNPFile sf  =(SNPFile) session.get(SNPFile.class,id);
+        Transaction transaction = session.getTransaction();
+        SNPFile sf  = null  ;
+        try{
+            transaction.begin();
+            sf  = (SNPFile) session.get(SNPFile.class,id);
+            transaction.commit();
+        }catch (Exception se){
+          transaction.rollback();
+
+        }
 
         String text;
 
+        if(sf != null){
+        String filename = sf.getFilename();
+        String fileNameWithOutExt = FilenameUtils.removeExtension(filename);
         if (format.equals("mask") ){
             text = sf.getMask_fasta();
             responseHeaders.setContentType(TEXT_FASTA_NA_TYPE);
+            responseHeaders.add("Content-Disposition", "attachment; filename=" + fileNameWithOutExt + "_mask.fa");
         }else if(format.equals("primers")){
-            responseHeaders.setContentType(TEXT_CSV_TYPE);
+            responseHeaders.setContentType(TEXT_CSV_TYPE); // or you can use text/csv
+            responseHeaders.add("Content-Disposition", "attachment; filename=" + fileNameWithOutExt + "_primers.csv");
             text = sf.getPolymarker_output();
 
         }else{
             text = "Invalid file";
         }
-        transaction.commit();
+        }else {
+            text = "Unable to load file";
+        }
+
 
         return new ResponseEntity<String>(text, responseHeaders, HttpStatus.CREATED);
 

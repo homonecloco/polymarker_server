@@ -146,6 +146,13 @@ public class SNP {
 
     }
 
+    public void sanitize_chr_arm(){
+        this.chromosome = chromosome.substring(0,2);
+
+
+
+    }
+
     public static SNP SNPFromLine(String line, SNPFile sf){
        String[] elements = line.split(",");
        SNP snp = null;
@@ -157,6 +164,7 @@ public class SNP {
             snp.setProcess(true);
             try {
                 snp.sanitize_snp();
+                snp.sanitize_chr_arm();
             }catch (PolymarkerException pe){
                 snp.addWarning(pe.getMessage());
                 snp.setProcess(false);

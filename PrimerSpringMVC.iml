@@ -21,7 +21,7 @@
     <facet type="hibernate" name="Hibernate">
       <configuration>
         <datasource-map>
-          <unit-entry name="hibernate.cfg.xml" value="eb98bf9d-2ac9-4e2a-a9a5-543d1f318ec6" />
+          <unit-entry name="src:main:webapp:WEB-INF:classes:hibernate.cfg.xml" value="31370d23-b6a2-4c37-8bcb-80e08e179e69" />
         </datasource-map>
         <naming-strategy-map />
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/src/main/webapp/WEB-INF/classes/hibernate.cfg.xml" />
@@ -83,6 +83,8 @@
     <orderEntry type="library" name="Maven: org.hibernate.common:hibernate-commons-annotations:4.0.1.Final" level="project" />
     <orderEntry type="library" name="Maven: org.hsqldb:hsqldb:2.2.9" level="project" />
     <orderEntry type="library" name="Maven: org.json:json:20080701" level="project" />
+    <orderEntry type="library" name="Maven: org.hibernate:hibernate-c3p0:4.1.12.Final" level="project" />
+    <orderEntry type="library" name="Maven: c3p0:c3p0:0.9.1" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:13.0-final" level="project" />
   </component>
 </module>

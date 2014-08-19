@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="1526750895">
+  <component name="DataSourceManagerImpl" format="xml" hash="2739385049">
     <data-source source="LOCAL" name="src:main:webapp:WEB-INF:hibernate.cfg.xml" uuid="8f50d470-441b-4126-9135-860edded10f4">
       <driver-ref>mysql</driver-ref>
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
@@ -28,6 +28,18 @@
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306/polymarker</jdbc-url>
       <user-name>root</user-name>
+      <libraries>
+        <library>
+          <url>file://$PROJECT_DIR$/lib/mysql-connector-java-5.1.29.jar</url>
+        </library>
+      </libraries>
+    </data-source>
+    <data-source source="LOCAL" name="src:main:webapp:WEB-INF:classes:hibernate.cfg.xml" uuid="31370d23-b6a2-4c37-8bcb-80e08e179e69">
+      <driver-ref>mysql</driver-ref>
+      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://tgac-db1:3306/polymarker_data</jdbc-url>
+      <user-name>polymarker</user-name>
+      <user-password>dfdadf9adfc6dfd3dfc7df9edfd8dfc1dfcfdfd8</user-password>
       <libraries>
         <library>
           <url>file://$PROJECT_DIR$/lib/mysql-connector-java-5.1.29.jar</url>
