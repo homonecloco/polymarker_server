@@ -86,6 +86,9 @@
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-c3p0:4.1.12.Final" level="project" />
     <orderEntry type="library" name="Maven: c3p0:c3p0:0.9.1" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:13.0-final" level="project" />
+    <orderEntry type="library" name="Maven: net.sf.jfasta:jfasta:2.1.1" level="project" />
+    <orderEntry type="library" name="Maven: net.sf.kerner-utils-io:kerner-utils-io:0.5.0" level="project" />
+    <orderEntry type="library" name="Maven: net.sf.kerner-utils:kerner-utils:0.18.2" level="project" />
   </component>
 </module>
 

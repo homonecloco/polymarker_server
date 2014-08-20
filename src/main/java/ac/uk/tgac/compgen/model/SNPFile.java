@@ -1,5 +1,6 @@
 package ac.uk.tgac.compgen.model;
 
+import ac.uk.tgac.compgen.PolymarkerException;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -55,7 +56,7 @@ public class SNPFile {
         snpList = new LinkedList<SNP>();
     }
 
-    public static SNPFile parseStream(InputStream inputStream) throws IOException {
+    public static SNPFile parseStream(InputStream inputStream) throws IOException, PolymarkerException {
         String line;
         BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
         SNPFile sf = new SNPFile();
@@ -116,7 +117,12 @@ public class SNPFile {
         this.snpList = snpList;
     }
 
-    public void add(SNP snp) {
+    public void add(SNP snp) throws PolymarkerException {
+        for (SNP s : snpList){
+            if(s.getName().equals(snp.getName())){
+                throw new PolymarkerException(snp.getName() + " appears more than once as an SNP id");
+            }
+        }
         snpList.add(snp);
     }
 
@@ -152,15 +158,15 @@ public class SNPFile {
            return submitted;
        }
 
-       public void setSubmitted(Date submitted) {
+    public void setSubmitted(Date submitted) {
            this.submitted = submitted;
        }
 
-       public Date getLastChange() {
+    public Date getLastChange() {
            return lastChange;
        }
 
-       public void setLastChange(Date lastChange) {
+    public void setLastChange(Date lastChange) {
            this.lastChange = lastChange;
        }
 }

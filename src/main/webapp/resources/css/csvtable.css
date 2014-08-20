@@ -1,6 +1,6 @@
 /* CSV Table Classes */
 TABLE.CSVTable {
-	font: 0.5em Verdana,Arial,Geneva,Helvetica,sans-serif;
+	font: 0.5em "Courier New", Courier, monospace;
 	border-collapse: collapse;
 	width: 450px;
     word-break: keep-all ;
@@ -8,10 +8,10 @@ TABLE.CSVTable {
 
 /* Header */
 TABLE.CSVTable THEAD TR {
-	background: #E8EDFF;   .
+	background: #E8EDFF;
 }
 TABLE.CSVTable TH {
-	font-family: "Lucida Sans Unicode","Lucida Grande",Sans-Serif;
+	font-family:"Courier New", Courier, monospace;
 	font-size: 1.2em;
 }
 

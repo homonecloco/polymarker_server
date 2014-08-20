@@ -203,4 +203,11 @@ public class SNP {
     public void setProcess(boolean process) {
         this.process = process;
     }
+
+    public String getMaskAll(){
+        String mask = "";
+
+
+        return mask;
+    }
 }

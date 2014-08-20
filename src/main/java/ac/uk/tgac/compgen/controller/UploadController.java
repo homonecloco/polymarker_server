@@ -8,6 +8,10 @@ import ac.uk.tgac.compgen.model.SNP;
 import ac.uk.tgac.compgen.model.SNPFile;
 import ac.uk.tgac.compgen.model.UploadedFile;
 import ac.uk.tgac.compgen.validator.FileValidator;
+import net.sf.jfasta.FASTAElement;
+import net.sf.jfasta.impl.FASTAElementIterator;
+import net.sf.jfasta.impl.FASTAFileReaderImpl;
+import org.apache.commons.io.FilenameUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +27,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import org.apache.commons.io.FilenameUtils;
-
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.util.List;
 import java.util.Map;
 
@@ -47,7 +50,7 @@ public class UploadController {
     }
 
     @RequestMapping (value = "/status", method = {RequestMethod.POST, RequestMethod.GET})
-      public ModelAndView getStatus (HttpServletRequest request) {
+    public ModelAndView getStatus (HttpServletRequest request) {
         Map<String, String[]> parameters = request.getParameterMap();
         org.hibernate.internal.SessionFactoryImpl sessionFactory = (org.hibernate.internal.SessionFactoryImpl) context.getAttribute("sessionFactory");
         Session session = sessionFactory.getCurrentSession();
@@ -97,6 +100,9 @@ public class UploadController {
             if(snps.size() > 200){
                 result.rejectValue("file", "uploadForm.salectFile", "The maximum number of SNPs to analyze is 200");
             }
+
+
+
             if(!result.hasErrors()){
                 org.hibernate.internal.SessionFactoryImpl sessionFactory = (org.hibernate.internal.SessionFactoryImpl) context.getAttribute("sessionFactory");
                 Session session = sessionFactory.getCurrentSession();
@@ -148,7 +154,7 @@ public class UploadController {
         String text;
 
         if (format.equals("mask") ){
-                text = sf.getMask_fasta();
+            text = sf.getMask_fasta();
         }else if(format.equals("primers")){
             text = sf.getPolymarker_output();
         }else{
@@ -193,27 +199,27 @@ public class UploadController {
             sf  = (SNPFile) session.get(SNPFile.class,id);
             transaction.commit();
         }catch (Exception se){
-          transaction.rollback();
+            transaction.rollback();
 
         }
 
         String text;
 
         if(sf != null){
-        String filename = sf.getFilename();
-        String fileNameWithOutExt = FilenameUtils.removeExtension(filename);
-        if (format.equals("mask") ){
-            text = sf.getMask_fasta();
-            responseHeaders.setContentType(TEXT_FASTA_NA_TYPE);
-            responseHeaders.add("Content-Disposition", "attachment; filename=" + fileNameWithOutExt + "_mask.fa");
-        }else if(format.equals("primers")){
-            responseHeaders.setContentType(TEXT_CSV_TYPE); // or you can use text/csv
-            responseHeaders.add("Content-Disposition", "attachment; filename=" + fileNameWithOutExt + "_primers.csv");
-            text = sf.getPolymarker_output();
+            String filename = sf.getFilename();
+            String fileNameWithOutExt = FilenameUtils.removeExtension(filename);
+            if (format.equals("mask") ){
+                text = sf.getMask_fasta();
+                responseHeaders.setContentType(TEXT_FASTA_NA_TYPE);
+                responseHeaders.add("Content-Disposition", "attachment; filename=" + fileNameWithOutExt + "_mask.fa");
+            }else if(format.equals("primers")){
+                responseHeaders.setContentType(TEXT_CSV_TYPE); // or you can use text/csv
+                responseHeaders.add("Content-Disposition", "attachment; filename=" + fileNameWithOutExt + "_primers.csv");
+                text = sf.getPolymarker_output();
 
-        }else{
-            text = "Invalid file";
-        }
+            }else{
+                text = "Invalid file";
+            }
         }else {
             text = "Unable to load file";
         }
@@ -223,5 +229,56 @@ public class UploadController {
 
 
     }
+
+    @RequestMapping(method=RequestMethod.GET, value="/get_mask")
+    public ResponseEntity getMask (HttpServletRequest request){
+        HttpHeaders responseHeaders = new HttpHeaders();
+        Map<String, String[]> parameters = request.getParameterMap();
+        org.hibernate.internal.SessionFactoryImpl sessionFactory = (org.hibernate.internal.SessionFactoryImpl) context.getAttribute("sessionFactory");
+        Session session = sessionFactory.getCurrentSession();
+
+
+        session.beginTransaction();
+        String[] ids = parameters.get("id");
+        Long id =  Long.parseLong(ids[0]);
+
+        String[] markers = parameters.get("marker");
+        String marker =  markers[0];
+
+        SNPFile sf  =(SNPFile) session.get(SNPFile.class,id);
+        session.getTransaction().commit();
+        //InputStream is = IOUtils.toInputStream(sf.getMask_fasta()) ;
+        StringBuilder sb = new StringBuilder();
+
+        try {
+
+            FASTAElementIterator it = new FASTAFileReaderImpl(new StringReader(sf.getMask_fasta())).getIterator();
+
+            System.out.println("Marker to search: " + marker);
+            boolean print_mask = false;
+            while (it.hasNext()) {
+                FASTAElement entry = it.next();
+                if(print_mask && entry.getHeader().startsWith("MASK")){
+                    sb.append(entry.toString());
+                    sb.append('\n');
+                    print_mask = false;
+                }
+                else if(entry.getHeader().startsWith(marker)){
+                    sb.append(entry.toString());
+                    sb.append('\n');
+                    print_mask = true;
+                }else{
+                    print_mask = false;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            sb.append(e.getMessage());
+        }
+
+        return new ResponseEntity<String>(sb.toString(), responseHeaders, HttpStatus.CREATED);
+    }
+
+
 
 }
