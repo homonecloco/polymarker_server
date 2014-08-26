@@ -130,17 +130,17 @@
 							printedLines++;
 
 							(printedLines % 2) ? oddOrEven = 'odd' : oddOrEven = 'even';
-							tableHTML += '<tr class="' + options.trClass + ' ' + oddOrEven + '">';
+							tableHTML += '<tr id="' + items[to_print[0]] + '"class="' + options.trClass + ' ' + oddOrEven + '">';
                             for(var i = 0; i < to_print.length; i++){
                                 var item = items[to_print[i]];
                                 if( typeof(item) == 'undefined' ){
                                     item = "";
                                 }
                                 item=item.replace(/[|]/g, "<br>");
-                                tableHTML += '<td class="' + options.tdClass + '">' + item + '</td>';
+                                tableHTML += '<td   class="' + options.tdClass + '">' + item + '</td>';
                             }
                             tableHTML += '<td><div class="arrow"></div></td>' ;
-                            tableHTML += '<tr><td colspan="' + to_print.length + '"><div>Here comes the mask</div></td></tr>';
+                            tableHTML += '<tr><td colspan="' + to_print.length + '"><div id="msa-' +items[to_print[0]]  +'">Here comes the mask</div></td></tr>';
 							tableHTML += '</tr>';
 						}
 					}

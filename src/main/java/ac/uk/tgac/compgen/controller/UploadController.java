@@ -256,12 +256,14 @@ public class UploadController {
 
             System.out.println("Marker to search: " + marker);
             boolean print_mask = false;
-            while (it.hasNext()) {
+            boolean done = false;
+            while (it.hasNext() && !done) {
                 FASTAElement entry = it.next();
                 if(print_mask && entry.getHeader().startsWith("MASK")){
                     sb.append(entry.toString());
                     sb.append('\n');
                     print_mask = false;
+                    done = true;
                 }
                 else if(entry.getHeader().startsWith(marker)){
                     sb.append(entry.toString());

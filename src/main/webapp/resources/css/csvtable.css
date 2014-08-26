@@ -32,6 +32,8 @@ TABLE.CSVTable TR {
 TABLE.CSVTable TR.odd {
 	background: #F9F9F9;
 }
+
+
 /* Hover color for all rows */
 TABLE.CSVTable TR:hover {
 	background: #E8EDFF;
