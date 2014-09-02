@@ -139,8 +139,9 @@
                                 item=item.replace(/[|]/g, "<br>");
                                 tableHTML += '<td   class="' + options.tdClass + '">' + item + '</td>';
                             }
-                            tableHTML += '<td><div class="arrow"></div></td>' ;
-                            tableHTML += '<tr><td colspan="' + to_print.length + '"><div id="msa-' +items[to_print[0]]  +'">Here comes the mask</div></td></tr>';
+                           // tableHTML += '<td><div class="arrow"></div></td>' ;
+                            var    primers = items[3] + "," + items[7] + "," + items[8] + "," + items[9] + "," + items[11] + "," + items[16];
+                            tableHTML += '<tr ><td colspan="' + to_print.length + '"><div id="msa-' +items[to_print[0]] + '" data-primers="' + primers + '">Here comes the mask</div></td></tr>';
 							tableHTML += '</tr>';
 						}
 					}

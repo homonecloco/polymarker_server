@@ -254,7 +254,7 @@ public class UploadController {
 
             FASTAElementIterator it = new FASTAFileReaderImpl(new StringReader(sf.getMask_fasta())).getIterator();
 
-            System.out.println("Marker to search: " + marker);
+
             boolean print_mask = false;
             boolean done = false;
             while (it.hasNext() && !done) {
