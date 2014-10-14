@@ -15,7 +15,7 @@
 <title>Polymarker</title>
 </head>
 <body id="page-wrap">
-<img class="main-header" src="images/polymarker_header.png"/>
+<a href="${pageContext.request.contextPath}/"><img class="main-header" src="images/polymarker_header.png" border="0"/></a>
 
 <div id="main-body">
 <p>

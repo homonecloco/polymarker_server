@@ -87,7 +87,7 @@
 			loadingText: "Loading CSV data...",
 			separator: ",",
 			startLine: 0,
-            print: [0,1,3,4,5,6,7,8,9,10,16]
+            print: [0,1,3,4,5,6,7,8,9,10,16,17]
 		};	
 		var options = $.extend(defaults, options);
 		return this.each(function() {
@@ -102,6 +102,8 @@
 				var headerCount = 0;
 				var headers = new Array();
                 var to_print = options.print;
+                console.log(to_print);
+
 				$.each(lines, function(lineCount, line) {
 					if ((lineCount == 0) && (typeof(options.headers) != 'undefined')) {
 						headers = options.headers;
@@ -111,7 +113,7 @@
                             tableHTML += '<th class="' + options.thClass + '">' + headers[i] + '</th>';
                         }
 
-                        tableHTML += '<th class="' + options.thClass + '"> </th>';
+                        //tableHTML += '<th class="' + options.thClass + '"> </th>';
 						tableHTML += '</tr></thead><tbody class="' + options.tbodyClass + '">';
 					}
 					if ((lineCount == options.startLine) && (typeof(options.headers) == 'undefined')) {
@@ -120,8 +122,8 @@
 						tableHTML += '<thead class="' + options.theadClass + '"><tr class="' + options.trClass + '">';
 
 
-                        for(var i = 0; i < to_print.length; i++){
-                           tableHTML += '<th class="' + options.thClass + '">' + headers[to_print[i]] + '</th>';
+                        for(var j = 0; j < to_print.length; j++){
+                           tableHTML += '<th class="' + options.thClass + '">' + headers[to_print[j]] + '</th>';
                         }
 						tableHTML += '</tr></thead><tbody class="' + options.tbodyClass + '">';
 					} else if (lineCount >= options.startLine) {
@@ -133,6 +135,7 @@
 							tableHTML += '<tr id="' + items[to_print[0]] + '"class="' + options.trClass + ' ' + oddOrEven + '">';
                             for(var i = 0; i < to_print.length; i++){
                                 var item = items[to_print[i]];
+                                console.log(item + " " + to_print[i]);
                                 if( typeof(item) == 'undefined' ){
                                     item = "";
                                 }
@@ -140,7 +143,7 @@
                                 tableHTML += '<td   class="' + options.tdClass + '">' + item + '</td>';
                             }
                            // tableHTML += '<td><div class="arrow"></div></td>' ;
-                            var    primers = items[3] + "," + items[7] + "," + items[8] + "," + items[9] + "," + items[11] + "," + items[16];
+                            var primers = items[3] + "," + items[7] + "," + items[8] + "," + items[9] + "," + items[11] + "," + items[16];
                             tableHTML += '<tr ><td colspan="' + to_print.length + '"><div id="msa-' +items[to_print[0]] + '" data-primers="' + primers + '">Here comes the mask</div></td></tr>';
 							tableHTML += '</tr>';
 						}

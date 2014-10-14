@@ -8,12 +8,15 @@ import ac.uk.tgac.compgen.model.SNP;
 import ac.uk.tgac.compgen.model.SNPFile;
 import ac.uk.tgac.compgen.model.UploadedFile;
 import ac.uk.tgac.compgen.validator.FileValidator;
+import com.google.common.base.Charsets;
+import com.google.common.hash.Hashing;
 import net.sf.jfasta.FASTAElement;
 import net.sf.jfasta.impl.FASTAElementIterator;
 import net.sf.jfasta.impl.FASTAFileReaderImpl;
 import org.apache.commons.io.FilenameUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.internal.SessionFactoryImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -31,8 +34,11 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Controller
 public class UploadController {
@@ -53,20 +59,17 @@ public class UploadController {
     public ModelAndView getStatus (HttpServletRequest request) {
         Map<String, String[]> parameters = request.getParameterMap();
         org.hibernate.internal.SessionFactoryImpl sessionFactory = (org.hibernate.internal.SessionFactoryImpl) context.getAttribute("sessionFactory");
-        Session session = sessionFactory.getCurrentSession();
 
 
-        session.beginTransaction();
+
         String[] ids = parameters.get("id");
-        Long id =  Long.parseLong(ids[0]);
+        String id = ids[0];
 
 
-        SNPFile sf  =(SNPFile) session.get(SNPFile.class,id);
-
+        SNPFile sf = getSNPFileFromID(id, sessionFactory);
         ModelAndView mv = new ModelAndView();
         mv.setViewName("primer_status");
         mv.addObject("sf",sf);
-        session.getTransaction().commit();
 
         return mv;
     }
@@ -94,7 +97,13 @@ public class UploadController {
             sf.setFilename(fileName);
             sf.setEmail(uploadedFile.getEmail());
             List<SNP> snps = sf.getSnpList();
-            if(snps.size() == 0){
+
+            int good_snps = 0;
+            for(SNP snp : snps){
+                if(snp.isProcess())
+                    good_snps++;
+            }
+            if(good_snps == 0){
                 result.rejectValue("file", "uploadForm.salectFile", "Unable to parse any SNP in the file");
             }
             if(snps.size() > 200){
@@ -102,9 +111,12 @@ public class UploadController {
             }
 
 
-
             if(!result.hasErrors()){
                 org.hibernate.internal.SessionFactoryImpl sessionFactory = (org.hibernate.internal.SessionFactoryImpl) context.getAttribute("sessionFactory");
+                java.util.Date date= new java.util.Date();
+                Timestamp currentTimestamp= new Timestamp(date.getTime());
+                String hash =  Hashing.sha1().hashString( fileName + sf.getEmail() + currentTimestamp.toString() , Charsets.UTF_8 ).toString();
+                sf.setHash(hash);
                 Session session = sessionFactory.getCurrentSession();
                 Transaction transaction = session.getTransaction();
 
@@ -113,7 +125,8 @@ public class UploadController {
                     id_saved = (Long) session.save(sf);
                     transaction.commit();
                     ModelAndView mv = new ModelAndView("showFile", "message", fileName);
-                    mv.addObject("id", id_saved);
+
+                    mv.addObject("id", id_saved + ":" + hash  );
                     return mv;
                 }   catch (Exception e){
 
@@ -132,44 +145,51 @@ public class UploadController {
 
     }
 
-    @RequestMapping (value = "/get_file_old", method = {RequestMethod.POST, RequestMethod.GET})
-    public ModelAndView renderPromotePage_old (HttpServletRequest request) {
-        Map<String, String[]> parameters = request.getParameterMap();
-
-
-        org.hibernate.internal.SessionFactoryImpl sessionFactory = (org.hibernate.internal.SessionFactoryImpl) context.getAttribute("sessionFactory");
+    private SNPFile getSNPFileFromID(String hashid, SessionFactoryImpl sessionFactory){
+        if(hashid == null)
+           return null;
         Session session = sessionFactory.getCurrentSession();
-        String[] ids = parameters.get("id");
-        String[] outs = parameters.get("output");
+        session.beginTransaction();
+
+        String[] args = hashid.split(":");
 
 
-        Long id =  Long.parseLong(ids[0]);
-        String format = outs[0];
 
-
+        Long id = Long.parseLong(args[0]);
+        String hash = null;
+        if(args.length > 1)
+          hash = args[1];
         Transaction transaction = session.getTransaction();
-        transaction.begin();
-        SNPFile sf  =(SNPFile) session.get(SNPFile.class,id);
+        SNPFile sf = null;
+        try {
 
-        String text;
 
-        if (format.equals("mask") ){
-            text = sf.getMask_fasta();
-        }else if(format.equals("primers")){
-            text = sf.getPolymarker_output();
-        }else{
-            text = "Invalid file";
+            sf = (SNPFile) session.get(SNPFile.class, id);
+
+            String other_hash;
+            other_hash = sf.getHash();
+
+            if(other_hash != null && !other_hash.equals(hash)) {
+                sf = null;
+            }
+            transaction.commit();
+        } catch (Exception se) {
+            if(transaction.isActive() ) {
+                //com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: No operations allowed after connection closed.Connection was implicitly closed by the driver.
+                //org.hibernate.TransactionException: unable to rollback against JDBC connection
+                try {
+                    transaction.rollback();
+                }catch (Exception sqe) {
+                    Logger.getLogger("Polymarker").log(Level.WARNING, "Closing connection: " + sqe.getMessage());
+                }
+            }
+            sf = null;
         }
-
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("show_file");
-        mv.addObject("text",text);
-
-        transaction.commit();
-        return mv;
+        return sf;
     }
 
-    public final static String TEXT_CSV = "text/csv";
+
+   // public final static String TEXT_CSV = "text/csv";
     public final static MediaType TEXT_CSV_TYPE = new MediaType("application", "ms-excel");
     public final static MediaType TEXT_FASTA_NA_TYPE = new MediaType("chemical", "seq-na-fasta");
 
@@ -184,24 +204,16 @@ public class UploadController {
 
         String[] ids = parameters.get("id");
         String[] outs = parameters.get("output");
+        String id = null;
+        String format = "";
 
-
-        Long id =  Long.parseLong(ids[0]);
-        String format = outs[0];
-
-
-        Session session = sessionFactory.getCurrentSession();
-
-        Transaction transaction = session.getTransaction();
-        SNPFile sf  = null  ;
-        try{
-            transaction.begin();
-            sf  = (SNPFile) session.get(SNPFile.class,id);
-            transaction.commit();
-        }catch (Exception se){
-            transaction.rollback();
-
+        if(ids.length == 1 && outs.length == 1) {
+             id = ids[0];
+             format = outs[0];
         }
+
+
+       SNPFile sf = getSNPFileFromID(id, sessionFactory);
 
         String text;
 
@@ -235,19 +247,15 @@ public class UploadController {
         HttpHeaders responseHeaders = new HttpHeaders();
         Map<String, String[]> parameters = request.getParameterMap();
         org.hibernate.internal.SessionFactoryImpl sessionFactory = (org.hibernate.internal.SessionFactoryImpl) context.getAttribute("sessionFactory");
-        Session session = sessionFactory.getCurrentSession();
 
-
-        session.beginTransaction();
         String[] ids = parameters.get("id");
-        Long id =  Long.parseLong(ids[0]);
+        String id =  ids[0];
 
         String[] markers = parameters.get("marker");
         String marker =  markers[0];
 
-        SNPFile sf  =(SNPFile) session.get(SNPFile.class,id);
-        session.getTransaction().commit();
-        //InputStream is = IOUtils.toInputStream(sf.getMask_fasta()) ;
+        SNPFile sf = getSNPFileFromID(id, sessionFactory);
+
         StringBuilder sb = new StringBuilder();
 
         try {

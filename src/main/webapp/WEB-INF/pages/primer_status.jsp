@@ -19,14 +19,19 @@
     <script type="text/javascript" src="js/jExpand.js"></script>
     <!--<script type="text/javascript" src="js/biojs_io_fasta.min.js"></script>   -->
     <!--  <script type="text/javascript" src="js/msa.min.gz.js"></script>            -->
-    <script src=//cdn.biojs-msa.org/msa/latest/msa.min.gz.js></script>
+    <!--  <script src=//cdn.biojs-msa.org/msa/latest/msa.min.gz.js></script> -->
+    <!-- TODO: Update to MSA 0.2 -->
+     <script src="http://cdn.biojs-msa.org/msa/0.2/msa.min.gz.js"></script>
+     <link type="text/css" rel="stylesheet" href="//cdn.biojs-msa.org/msa/0.2/msa.min.gz.css" />
 
     <script>
         $(function() {
-            var table = $('#CSVTable').CSVToTable('get_file?id=${sf.id}&output=primers', {headers: ["ID",	"SNP", "chr","total", 	"contig regions", 	"SNP type", "A", "B","common", "primer type", "product size"], startLine: 1});
+            var csv_table_selector = $('#CSVTable');
+            var table = csv_table_selector.CSVToTable('get_file?id=${sf.id}:${sf.hash}&output=primers', {headers: ["ID",	"SNP", "Chr","RTtal", 	"Contig regions", 	"SNP type", "A", "B","Common", "Primer type", "Product size", "Error"], startLine: 1});
             table.bind("loadComplete",function() {
-                $('#CSVTable').jExpand();
-                $('#CSVTable').load_msa(${sf.id});
+
+                csv_table_selector.jExpand();
+                csv_table_selector.load_msa('${sf.id}:${sf.hash}');
             });
             $('#statusTable').jExpand();
 
@@ -35,19 +40,16 @@
             });
             $("#statusTable").hide();
             $( "#show_mask").click(function() {
-                $("#CSVTable" ).show_all();
+                csv_table_selector.show_all();
             });
             $( "#hide_mask").click(function() {
-                $("#CSVTable" ).hide_all();
+                csv_table_selector.hide_all();
             });
-
-
-
         });
     </script>
 </head>
 <body id="page-wrap">
-<img class="main-header" src="images/polymarker_header.png"/>
+<a href="${pageContext.request.contextPath}/"><img class="main-header" src="images/polymarker_header.png" border="0"/></a>
 
 <div id="main-body">
     The status of your file (${sf.filename} ) is: <strong> ${sf.status}</strong>
@@ -95,8 +97,8 @@
     <c:choose>
         <c:when test="${sf.status=='DONE' || sf.status=='NOTIFIED'}">
             <ul>
-                <li><a href="get_file?id=${sf.id}&output=primers" >Primers</a></li>
-                <li><a href="get_file?id=${sf.id}&output=mask" >Mask</a></li>
+                <li><a href="get_file?id=${sf.id}:${sf.hash}&output=primers" >Primers</a></li>
+                <li><a href="get_file?id=${sf.id}:${sf.hash}&output=mask" >Mask</a></li>
             </ul>
             <button id="show_mask" > Show all masks</button>
             <button id="hide_mask" > Hide all masks</button>

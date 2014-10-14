@@ -13,7 +13,7 @@
     <script type="text/javascript" src="js/jquery-2.1.0.js"></script>
 </head>
 <body id="page-wrap">
-<img class="main-header" src="images/polymarker_header.png"/>
+<a href="${pageContext.request.contextPath}/"><img class="main-header" src="images/polymarker_header.png" border="0"/></a>
 
 <div id="main-body">
 

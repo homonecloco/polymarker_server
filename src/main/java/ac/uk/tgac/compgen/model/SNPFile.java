@@ -40,7 +40,7 @@ public class SNPFile {
 
     @Column(length = 65535,columnDefinition="Text")
     private String polymarker_output;
-    @Column(length = 65535,columnDefinition="Text")
+    @Column(columnDefinition="MEDIUMTEXT")
     private String mask_fasta;
 
 
@@ -51,6 +51,17 @@ public class SNPFile {
 
     @Column
     private String error;
+
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
+
+    @Column(nullable = true)
+    private String hash;
 
     public SNPFile(){
         snpList = new LinkedList<SNP>();

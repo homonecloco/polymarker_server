@@ -55,11 +55,14 @@
 
                     var a=seqs[0];
                     var b=seqs[1];
-                    var c=seqs[chr_index];
+                    var c=b;
+                    var left_most = 0;
+
+                    if(seqs[chr_index]){
+                       c=seqs[chr_index];
+                    }
+
                     var mask = seqs[seqs.length-1];
-
-
-
                     var index_snp = mask.seq.indexOf("&") ;
                     if(index_snp < 0){
                         index_snp = mask.seq.indexOf(":");
@@ -70,29 +73,42 @@
                         seqs: seqs,
                         zoomer: {
                             labelWidth: 100,
-                            alignmentWidth: "1040px"
+                            //alignmentWidth: "auto" ,
+                            alignmentWidth: 1000 ,
+                            labelFontsize: "13px",
+                            labelIdLength: 50
                         },
-                        allowRectSelect : false
+                        g:{
+                            conserv: false,
+                            registerMouseClicks: false,
+                            scheme: "nucleotide",
+                            allowRectSelect : false
+                        }
+
                     }) ;
                     msa.g.vis.set("conserv",  false);
-                    msa.g.colorscheme.set("scheme", "nucleic");
-                    msa.render();
+                    msa.g.vis.set("registerMouseClicks", false);
+                    msa.g.colorscheme.set("scheme", "nucleotide");
+                    msa.g.config.set("registerMouseClicks", false);
+
 
                     var a_b_start = index_snp;
-
+                    left_most = index_snp - primers_arr[1].length;
                     var end_obj = find_end_with_gaps({
                         start:index_snp,
                         length:primers_arr[1].length,
-                        seq:a,
-                        validate:reverse_complement(primers_arr[1])});
+                        seq:c,
+                        skip:true});
 
                     var a_c_end = end_obj.end -1;
+
                     var start_obj = find_start_with_gaps({
                         end:end_obj.end,
                         length:primers_arr[5],
                         seq:c});
 
                     var common_index = start_obj.start;
+
                     var end_obj_2 = find_end_with_gaps({
                         start:common_index,
                         length:primers_arr[3].length,
@@ -107,20 +123,18 @@
                         start_obj = find_start_with_gaps({
                                                 end:index_snp,
                                                 length:primers_arr[1].length,
-                                                seq:a,
-                                                validate:primers_arr[1]});
+                                                seq:c,
+                                                skip:true});
                         a_b_start =  start_obj.start + 1;
                         a_c_end = index_snp ;
 
 
                         var complement = reverse_complement(primers_arr[3]);
-
                         end_obj = find_end_with_gaps({
                             start:a_b_start,
                             length:primers_arr[5],
                             seq:c
                         });
-
                         common_index = end_obj.end;
                         var start_obj_2 = find_start_with_gaps( {
                                 end:end_obj.end,
@@ -129,12 +143,10 @@
                                 validate: complement
                         }
                         );
-                        //common_index = c.seq.toUpperCase().indexOf(complement);
                         common_start = start_obj_2.start;
                         common_end = end_obj.end - 1;
-
                     }
-                    if(common_index >= 0){
+                    if(common_index >= 0 && c != b){
                         var se = new biojs.vis.msa.selection.possel(
                             {xStart: a_b_start,
                                 xEnd: a_c_end
@@ -145,42 +157,36 @@
                                 xEnd: a_c_end
                                 ,seqId: 1});
 
-
-
                         var se3 = new biojs.vis.msa.selection.possel(
                             {xStart: common_start,
                                 xEnd: common_end
                                 ,seqId: chr_index});
-
-
                         msa.g.selcol.add(se);
                         msa.g.selcol.add(se2);
                         msa.g.selcol.add(se3);
-
                     }
-
+                    msa.g.zoomer.setLeftOffset(left_most);
+                    msa.render();
                 }
-
             });
         });
-
-
-
     }
 })(jQuery);
 
 function find_end_with_gaps(opts){
-    var args = {start:0, length:0, seq:null, validate:null} ;
+    var args = {start:0, length:0, seq:null, validate:null, skip:false} ;
     if (opts.start) args.start = opts.start;
     if (opts.length)args.length = opts.length;
     if (opts.seq)args.seq = opts.seq;
     if (opts.validate)args.validate = opts.validate;
+    if (opts.skip)args.skip = opts.skip;
     var sequence = args.seq.seq.toUpperCase();
     var to_count = args.length;
     var i;
 
     for(i = args.start; i < sequence.length && to_count > 0; i++){
-       if(sequence[i] != '-'){
+       // if(!args.skip)
+        if(sequence[i] != '-'){
            to_count--;
        }
     }
@@ -189,26 +195,28 @@ function find_end_with_gaps(opts){
     ret.sequence = sequence.substring(args.start, i)  ;
     ret.end = i;
     ret.valid = true;
-    if(args.validate){
-        ret.valid = ret.sequence == args.validate.replace(/-/g, '');
-    }
+    //if(args.validate){
+    //    ret.valid = ret.sequence == args.validate.replace(/-/g, '');
+    //}
 
     return ret;
 
 }
 
 function find_start_with_gaps(opts){
-    var args = {end:50, length:0, seq:null, validate:null}     ;
+    var args = {end:50, length:0, seq:null, validate:null, skip:false}     ;
     if (opts.end) args.end = opts.end;
     if (opts.length) args.length = opts.length;
     if (opts.seq) args.seq = opts.seq;
     if (opts.validate)args.validate = opts.validate;
+    if (opts.skip) args.skip = opts.skip;
 
     var sequence = args.seq.seq.toUpperCase();
     var to_count = args.length;
     var i;
     for(i = args.end; i > 0 && to_count > 0; i--){
-       if(sequence[i] != '-'){
+       //if(!args.skip)
+       if(sequence[i] != '-'  ){
            to_count--;
        }
     }
@@ -217,9 +225,9 @@ function find_start_with_gaps(opts){
     ret.sequence = sequence.substring(i, args.end)  ;
     ret.start = i;
     ret.valid = true;
-    if(args.validate){
-        ret.valid = ret.sequence == args.validate.replace(/-/g, '');
-    }
+   // if(args.validate){
+   //     ret.valid = ret.sequence == args.validate.replace(/-/g, '');
+   // }
 
     return ret;
 
