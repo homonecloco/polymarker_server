@@ -3,6 +3,14 @@
     <output-path>$PROJECT_DIR$/target</output-path>
     <root id="archive" name="PrimerSpringMVC.war">
       <element id="artifact" artifact-name="PrimerSpringMVC:war exploded" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="org.commonjava.googlecode.markdown4j:markdown4j:2.2-cj-1.0" />
+          <element id="library" level="project" name="mysql:mysql-connector-java:5.1.29" />
+          <element id="library" level="project" name="org.biojava:biojava3-core:3.0" />
+          <element id="library" level="project" name="com.google.guava:guava:13.0-final" />
+        </element>
+      </element>
     </root>
   </artifact>
 </component>

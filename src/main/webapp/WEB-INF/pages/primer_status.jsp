@@ -27,7 +27,7 @@
     <script>
         $(function() {
             var csv_table_selector = $('#CSVTable');
-            var table = csv_table_selector.CSVToTable('get_file?id=${sf.id}:${sf.hash}&output=primers', {headers: ["ID",	"SNP", "Chr","RTtal", 	"Contig regions", 	"SNP type", "A", "B","Common", "Primer type", "Product size", "Error"], startLine: 1});
+            var table = csv_table_selector.CSVToTable('get_file?id=${sf.id}:${sf.hash}&output=primers', {headers: ["ID",	"SNP", "Chr","CTotal", 	"Contig regions", 	"SNP type", "A", "B","Common", "Primer type", "Product size", "Error"], startLine: 1});
             table.bind("loadComplete",function() {
 
                 csv_table_selector.jExpand();
@@ -49,8 +49,7 @@
     </script>
 </head>
 <body id="page-wrap">
-<a href="${pageContext.request.contextPath}/"><img class="main-header" src="images/polymarker_header.png" border="0"/></a>
-
+<c:import url="header.jsp"/>
 <div id="main-body">
     The status of your file (${sf.filename} ) is: <strong> ${sf.status}</strong>
     <br/>

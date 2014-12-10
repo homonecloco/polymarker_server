@@ -21,6 +21,22 @@
             <listener-class>ac.uk.tgac.compgen.listener.HibernateListener</listener-class>
     </listener>
 
+
+    <servlet>
+        <servlet-name>fileServlet</servlet-name>
+        <servlet-class>net.balusc.webapp.FileServlet</servlet-class>
+        <init-param>
+            <param-name>basePath</param-name>
+            <param-value>/WEB-INF/resources</param-value>
+        </init-param>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>fileServlet</servlet-name>
+        <url-pattern>/resources/*</url-pattern>
+    </servlet-mapping>
+
+
     <resource-ref>
             <description>DB Connection</description>
             <res-ref-name>jdbc/PolymarkerDB</res-ref-name>

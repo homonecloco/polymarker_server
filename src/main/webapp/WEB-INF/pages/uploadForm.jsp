@@ -7,16 +7,11 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
-<head>
-    <link rel="stylesheet" type="text/css" href="css/styles.css">
-    <script type="text/javascript" src="js/jquery-2.1.0.js"></script>
-
-<title>Polymarker</title>
-</head>
+<c:import url="head.jsp"/>
 <body id="page-wrap">
-<a href="${pageContext.request.contextPath}/"><img class="main-header" src="images/polymarker_header.png" border="0"/></a>
-
+<c:import url="header.jsp"/>
 <div id="main-body">
 <p>
     PolyMarker is an automated bioinformatics pipeline for SNP assay development which increases the probability of generating homoeologue-specific assays for polyploid wheat.
