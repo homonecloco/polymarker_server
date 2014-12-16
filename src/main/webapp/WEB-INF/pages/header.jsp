@@ -6,9 +6,9 @@
   	<div class="navigation">
   		<ul class="nav">
   			<li>
-  				<a href="${pageContext.request.contextPath}/">Home</a>
+  				<a href="${pageContext.request.contextPath}/">Request primers</a>
   			</li>
-            <li><a href="${pageContext.request.contextPath}/Markdown?md=Designed">Designed markers</a></li>
+            <li><a href="${pageContext.request.contextPath}/Markdown?md=DesignedPrimers">Designed primers</a></li>
   			<li>
   				<a href="${pageContext.request.contextPath}/Markdown?md=About">About</a>
   			</li>

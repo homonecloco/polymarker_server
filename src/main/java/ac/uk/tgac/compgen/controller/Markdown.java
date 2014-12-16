@@ -45,10 +45,9 @@ public class Markdown {
                     fileContent.append("\n");
 
                 }
-                System.out.print(text);
             }
 
-            rendered_md = new Markdown4jProcessor().process(fileContent.toString());
+            rendered_md = new Markdown4jProcessor().addHtmlAttribute("style", "width:960px", "img").process(fileContent.toString());
         } catch (IOException e) {
             rendered_md = "Unable to render markdown: " + e.getMessage();
             e.printStackTrace();
