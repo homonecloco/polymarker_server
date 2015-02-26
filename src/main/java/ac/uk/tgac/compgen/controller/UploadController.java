@@ -17,6 +17,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.internal.SessionFactoryImpl;
+import org.markdown4j.Markdown4jProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -32,8 +33,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import java.io.InputStream;
-import java.io.StringReader;
+import java.io.*;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
@@ -48,11 +48,45 @@ public class UploadController {
     @Autowired
     ServletContext context;
 
+    private String getMarkdown(String document) {
+           String rendered_md = (String) context.getAttribute("MD" + document);
+            if(rendered_md == null) {
+                try {
+
+                    String filename = "/WEB-INF/markdown/" + document + ".md";
+
+                    InputStream is;
+                    is = context.getResourceAsStream(filename);
+                    StringBuilder fileContent = new StringBuilder();
+                    if (is != null) {
+                        InputStreamReader isr = new InputStreamReader(is);
+                        BufferedReader reader = new BufferedReader(isr);
+
+                        String text;
+                        while ((text = reader.readLine()) != null) {
+                            fileContent.append(text);
+                            fileContent.append("\n");
+
+                        }
+                    }
+                    rendered_md = new Markdown4jProcessor().addHtmlAttribute("style", "width:960px", "img").process(fileContent.toString());
+                    context.setAttribute("MD" + document, rendered_md);
+                } catch (IOException e) {
+                    rendered_md = "Unable to render markdown: " + e.getMessage();
+                    e.printStackTrace();
+                }
+
+            }
+           return rendered_md;
+       }
+
     @RequestMapping("/")
     public ModelAndView getUploadForm(
             @ModelAttribute("uploadedFile") UploadedFile uploadedFile,
             BindingResult result) {
-        return new ModelAndView("uploadForm");
+        ModelAndView mv = new ModelAndView("uploadForm");
+        mv.addObject("rendered_md", getMarkdown("Home") );
+        return  mv;
     }
 
     @RequestMapping (value = "/status", method = {RequestMethod.POST, RequestMethod.GET})
@@ -289,6 +323,19 @@ public class UploadController {
         return new ResponseEntity<String>(sb.toString(), responseHeaders, HttpStatus.CREATED);
     }
 
+    @RequestMapping (value = "/Markdown", method = {RequestMethod.POST, RequestMethod.GET})
+        public ModelAndView markdown (HttpServletRequest request) {
+            Map<String, String[]> parameters = request.getParameterMap();
+
+
+            String rendered_md = getMarkdown(parameters.get("md")[0]);
+
+            ModelAndView mv = new ModelAndView();
+            mv.setViewName("markdown");
+            mv.addObject("rendered_md", rendered_md);
+
+            return mv;
+        }
 
 
 }

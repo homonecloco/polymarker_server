@@ -52,6 +52,10 @@ public class SNPFile {
     @Column
     private String error;
 
+    @OneToMany( cascade={CascadeType.ALL}, fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
+    List<SNPFilePreference> preferences;
+
     public String getHash() {
         return hash;
     }

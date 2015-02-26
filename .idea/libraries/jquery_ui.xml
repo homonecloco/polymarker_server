@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="jquery-ui" type="javaScript">
+    <properties>
+      <option name="frameworkName" value="jQuery" />
+      <option name="frameworkVersion" value="2.1.0" />
+      <sourceFilesUrls>
+        <item url="file://$PROJECT_DIR$/src/main/webapp/resources/js/jquery-2.1.0.js" />
+      </sourceFilesUrls>
+    </properties>
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/src/main/webapp/resources/js/jquery-2.1.0.js" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
