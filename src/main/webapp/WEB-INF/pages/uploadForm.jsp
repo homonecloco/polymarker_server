@@ -6,22 +6,37 @@
 <script>
     $(function() {
         dialog = $("#preferences").dialog({
-            autoOpen: true,
+
+            autoOpen: false,
             height: 300,
             width: 350,
-            modal: true,
-            close: function () {
+            modal: true
+
+            //close: function () {
                 // form[ 0 ].reset();
                 // allFields.removeClass( "ui-state-error" );
-            }
+            //}
         });
-        console.log("DIalog: " + dialog);
-    }
+
+        $( "#preferences-button" ).button().on( "click", function() {
+            dialog.dialog( "open" );
+            return false;
+          });
+
+         $(function() {
+                    $( "input[type=submit]" )
+                      .button() ;
+
+                  });
+       }
+
+
     )
 </script>
 <body id="page-wrap">
 <c:import url="header.jsp"/>
 <div id="main-body">
+    adads
     ${rendered_md}
 
 
@@ -30,7 +45,7 @@
 <form:form method="post" enctype="multipart/form-data"
    modelAttribute="uploadedFile" action="fileUpload.htm">
 
-    <fieldset>
+    <fieldset id="upload_file_fieldset">
         <label for="emailInput">Email</label>
         <form:input path="email" id="emailInput"/>
          <form:errors path="email" cssclass="error"/>
@@ -39,17 +54,18 @@
 
         <input type="file" name="file" />
         <form:errors path="file" />
+        <br/>
+        <button id="preferences-button" >Preferences</button>
+        <input type="submit" value="Upload" />
     </fieldset>
 
     <div id="preferences" title="Preferences">
-      <fieldset>
-        <p>Options:</p>
-      </fieldset>
+
 
     </div>
 
 
-    <input type="submit" value="Upload" />
+
 </form:form>
 
 </div>
