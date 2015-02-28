@@ -6,7 +6,7 @@ PolyMarker is an automated bioinformatics pipeline for SNP assay development whi
 
 See [About](/Markdown?md=About) to know how to prepare your input.
  
-We have [designed primers](/Markdown?md=DesignedPrimers) for the iSelect 90K chip
+We have [designed primers](/Markdown?md=DesignedPrimers) for the iSelect 90K chip.
 
 If you use PolyMarker please cite one of the following papers:
 
