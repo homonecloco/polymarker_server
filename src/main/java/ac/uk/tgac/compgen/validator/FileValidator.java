@@ -11,8 +11,7 @@ public class FileValidator implements Validator {
 
  @Override
  public boolean supports(java.lang.Class<?> aClass) {
-  // TODO Auto-generated method stub
-  return false;
+    return UploadedFile.class.toString().equals(aClass.getClass().toString()) ;
  }
 
  @Override

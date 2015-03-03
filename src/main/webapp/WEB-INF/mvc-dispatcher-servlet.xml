@@ -14,6 +14,7 @@
     </bean>
 
     <bean id="fileValidator" class="ac.uk.tgac.compgen.validator.FileValidator" />
+    <bean id="preferenceValidator" class="ac.uk.tgac.compgen.validator.PreferenceValidator" />
 
     <bean id="multipartResolver"
      class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />

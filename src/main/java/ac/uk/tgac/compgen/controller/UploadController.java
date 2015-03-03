@@ -8,6 +8,7 @@ import ac.uk.tgac.compgen.model.SNP;
 import ac.uk.tgac.compgen.model.SNPFile;
 import ac.uk.tgac.compgen.model.UploadedFile;
 import ac.uk.tgac.compgen.validator.FileValidator;
+import ac.uk.tgac.compgen.validator.PreferenceValidator;
 import com.google.common.base.Charsets;
 import com.google.common.hash.Hashing;
 import net.sf.jfasta.FASTAElement;
@@ -46,6 +47,8 @@ public class UploadController {
     @Autowired
     FileValidator fileValidator;
     @Autowired
+    PreferenceValidator preferenceValidator;
+    @Autowired
     ServletContext context;
 
     private String getMarkdown(String document) {
@@ -61,7 +64,6 @@ public class UploadController {
                     if (is != null) {
                         InputStreamReader isr = new InputStreamReader(is);
                         BufferedReader reader = new BufferedReader(isr);
-
                         String text;
                         while ((text = reader.readLine()) != null) {
                             fileContent.append(text);
@@ -78,7 +80,9 @@ public class UploadController {
 
             }
            return rendered_md;
-       }
+    }
+
+
 
     @RequestMapping("/")
     public ModelAndView getUploadForm(
@@ -86,6 +90,9 @@ public class UploadController {
             BindingResult result) {
         ModelAndView mv = new ModelAndView("uploadForm");
         mv.addObject("rendered_md", getMarkdown("Home") );
+        mv.addObject("papers_md", getMarkdown("Papers") );
+        mv.addObject("reference", "Triticum_aestivum.IWGSC2.25.dna_sm.toplevel.fa");
+        mv.addObject("references", PreferenceValidator.getValidReferences());
         return  mv;
     }
 
@@ -93,18 +100,12 @@ public class UploadController {
     public ModelAndView getStatus (HttpServletRequest request) {
         Map<String, String[]> parameters = request.getParameterMap();
         org.hibernate.internal.SessionFactoryImpl sessionFactory = (org.hibernate.internal.SessionFactoryImpl) context.getAttribute("sessionFactory");
-
-
-
         String[] ids = parameters.get("id");
         String id = ids[0];
-
-
         SNPFile sf = getSNPFileFromID(id, sessionFactory);
         ModelAndView mv = new ModelAndView();
         mv.setViewName("primer_status");
         mv.addObject("sf",sf);
-
         return mv;
     }
 
@@ -113,18 +114,19 @@ public class UploadController {
             @ModelAttribute("uploadedFile") UploadedFile uploadedFile,
             BindingResult result) {
         InputStream inputStream;
-
-
         MultipartFile file = uploadedFile.getFile();
         fileValidator.validate(uploadedFile, result);
 
         String fileName = file.getOriginalFilename().replaceAll(" ", "_");
-
+        ModelAndView mv = new ModelAndView("uploadForm");
+        mv.addObject("rendered_md", getMarkdown("Home") );
+        mv.addObject("papers_md", getMarkdown("Papers") );
+        mv.addObject("references", PreferenceValidator.getValidReferences());
         if (result.hasErrors()) {
-            return new ModelAndView("uploadForm");
+            return mv;
         }
-        SNPFile sf = null;
-        Long id_saved = 0L;
+        SNPFile sf;
+        Long id_saved;
         try {
             inputStream = file.getInputStream();
             sf = SNPFile.parseStream(inputStream);
@@ -158,7 +160,7 @@ public class UploadController {
                     transaction.begin();
                     id_saved = (Long) session.save(sf);
                     transaction.commit();
-                    ModelAndView mv = new ModelAndView("showFile", "message", fileName);
+                    mv = new ModelAndView("showFile", "message", fileName);
 
                     mv.addObject("id", id_saved + ":" + hash  );
                     return mv;
@@ -175,7 +177,7 @@ public class UploadController {
             e.printStackTrace();
         }
 
-        return new ModelAndView("uploadForm");
+        return mv;
 
     }
 
@@ -187,8 +189,6 @@ public class UploadController {
 
         String[] args = hashid.split(":");
 
-
-
         Long id = Long.parseLong(args[0]);
         String hash = null;
         if(args.length > 1)
@@ -196,13 +196,9 @@ public class UploadController {
         Transaction transaction = session.getTransaction();
         SNPFile sf = null;
         try {
-
-
             sf = (SNPFile) session.get(SNPFile.class, id);
-
             String other_hash;
             other_hash = sf.getHash();
-
             if(other_hash != null && !other_hash.equals(hash)) {
                 sf = null;
             }
@@ -214,7 +210,7 @@ public class UploadController {
                 try {
                     transaction.rollback();
                 }catch (Exception sqe) {
-                    Logger.getLogger("Polymarker").log(Level.WARNING, "Closing connection: " + sqe.getMessage());
+                    Logger.getLogger("PolyMarker").log(Level.WARNING, "Closing connection: " + sqe.getMessage());
                 }
             }
             sf = null;

@@ -13,7 +13,26 @@
     position: absolute;
     top: 200px;
     width: 960px;
+    font-family: Calibri, OpenSans, sans-serif;
+    color: gray;
+    padding: 10px;
 }
+
+#wrapper {
+
+}
+#content {
+  float: left;
+  width: 35em;
+}
+#sidebar {
+  float: right;
+  top: 75px;
+}
+#cleared {
+  clear: both;
+}
+
 .navigation{
     width: 960px;
     height: 34px;
