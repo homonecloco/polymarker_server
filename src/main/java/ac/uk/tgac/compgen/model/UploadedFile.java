@@ -17,6 +17,8 @@ public class UploadedFile {
 //    @Email
     private String email;
 
+    private String reference;
+
     public MultipartFile getFile() {
         return file;
     }
@@ -32,4 +34,13 @@ public class UploadedFile {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getReference() {
+          return reference;
+    }
+
+    public void setReference(String reference) {
+          this.reference = reference;
+    }
+
 }

@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
 
+
 /**
  * Created by ramirezr on 05/03/2014.
  */
@@ -54,6 +55,7 @@ public class SNPFile {
 
     @OneToMany( cascade={CascadeType.ALL}, fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)
+    private
     List<SNPFilePreference> preferences;
 
     public String getHash() {
@@ -69,6 +71,7 @@ public class SNPFile {
 
     public SNPFile(){
         snpList = new LinkedList<SNP>();
+        preferences = new LinkedList<SNPFilePreference>();
     }
 
     public static SNPFile parseStream(InputStream inputStream) throws IOException, PolymarkerException {
@@ -77,16 +80,11 @@ public class SNPFile {
         SNPFile sf = new SNPFile();
         sf.setStatus(Status.NEW);
         sf.setSubmitted(new Date());
-
         while ((line = in.readLine()) != null) {
-            //responseData.append(line);
-            System.out.println(line);
             SNP snp = SNP.SNPFromLine(line, sf);
             if(snp != null){
                 sf.add(snp);
-
             }
-
         }
         return sf;
     }
@@ -163,6 +161,22 @@ public class SNPFile {
 
     public void setError(String error) {
         this.error = error;
+    }
+
+    public List<SNPFilePreference> getPreferences() {
+        return preferences;
+    }
+
+    public void setPreferences(List<SNPFilePreference> preferences) {
+        this.preferences = preferences;
+    }
+
+    public void addPreference(String key, String value)
+    {
+        SNPFilePreference preference = new SNPFilePreference();
+        preference.setName(key);
+        preference.setValue(value);
+        preferences.add(preference);
     }
 
     public enum Status {

@@ -27,7 +27,7 @@
 }
 #sidebar {
   float: right;
-  top: 75px;
+  padding-top: 85px;
 }
 #cleared {
   clear: both;

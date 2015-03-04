@@ -36,6 +36,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -109,19 +110,32 @@ public class UploadController {
         return mv;
     }
 
-    @RequestMapping("/fileUpload")
+    @RequestMapping(value="/fileUpload", method = {RequestMethod.POST})
     public ModelAndView fileUploaded(
+            HttpServletRequest request,
             @ModelAttribute("uploadedFile") UploadedFile uploadedFile,
             BindingResult result) {
         InputStream inputStream;
-        MultipartFile file = uploadedFile.getFile();
         fileValidator.validate(uploadedFile, result);
+
+
+        Map<String, String[]> parameters = request.getParameterMap();
+
+        String reference = parameters.get("reference")[0].split("=")[0];
+        Map<String, String> preferences = new HashMap<String, String>();
+        preferences.put("reference", reference);
+
+        preferenceValidator.validate(preferences, result);
+
+        MultipartFile file = uploadedFile.getFile();
+
 
         String fileName = file.getOriginalFilename().replaceAll(" ", "_");
         ModelAndView mv = new ModelAndView("uploadForm");
         mv.addObject("rendered_md", getMarkdown("Home") );
         mv.addObject("papers_md", getMarkdown("Papers") );
         mv.addObject("references", PreferenceValidator.getValidReferences());
+
         if (result.hasErrors()) {
             return mv;
         }
@@ -132,6 +146,10 @@ public class UploadController {
             sf = SNPFile.parseStream(inputStream);
             sf.setFilename(fileName);
             sf.setEmail(uploadedFile.getEmail());
+            sf.addPreference("reference",reference );
+
+
+
             List<SNP> snps = sf.getSnpList();
 
             int good_snps = 0;

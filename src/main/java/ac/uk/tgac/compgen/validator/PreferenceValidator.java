@@ -43,17 +43,21 @@ public class PreferenceValidator implements Validator{
      }
 
      @Override
-     public void validate(Object pair, Errors errors) {
+     public void validate(Object map, Errors errors) {
          try {
-             Map.Entry entry = (Map.Entry) pair;
-             String key = entry.getKey().toString();
-             String value = entry.getValue().toString();
+             Map<String, String> _map = (Map<String, String>) map;
 
-             if (key.equals("reference")) {
-                isValidReference(value, errors);
-             }else{
-                errors.rejectValue("general", "uploadForm.preferences", "Invalid preference: " + key );
+             for (Map.Entry<String, String> entry : _map.entrySet()) {
+                 String key = entry.getKey();
+                 String value = entry.getValue();
+                 if (key.equals("reference")) {
+                        isValidReference(value, errors);
+                 }else{
+                    errors.rejectValue("general", "uploadForm.preferences", "Invalid preference: " + key );
+                 }
              }
+
+
          }  catch (ClassCastException cce){
              errors.rejectValue("general","uploadForm.preferences", "Not a Map.Entry!" );
          }

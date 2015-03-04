@@ -16,7 +16,7 @@
         <form:form method="post" enctype="multipart/form-data"
            modelAttribute="uploadedFile" action="fileUpload.htm">
 
-
+            <fieldset>
 
                 <label for="emailInput">Email: </label>
                 <form:input path="email" id="emailInput"/>
@@ -25,9 +25,9 @@
 
                 <label for="file">File: </label>
                 <input id="file" type="file" name="file"  />
-                <form:errors path="file" cssclass="error" />
+                 <form:errors path="file" cssclass="error" />
                 <br/>
-                <fieldset>
+
                     <label for="reference">Reference: </label>
                     <select name="reference" id="reference">
                     <c:forEach items="${references}" var="item" >
@@ -37,10 +37,13 @@
                     </c:forEach>
 
                     </select>
-
-                </fieldset>
-
+                <form:errors path="reference" cssclass="error" />
+                <br/>
                 <input type="submit" value="Upload" />
+
+
+            </fieldset>
+
 
 
             </div>
