@@ -11,15 +11,7 @@
     <bookmark url="file://$PROJECT_DIR$/src/main/java/ac/uk/tgac/compgen/model/SNPFile.java" description="private Date submitted;" line="46" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="430c5863-e09c-4d0a-8e4c-01a291bb87cc" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/markdown/Home.md" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/markdown/Home.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ac/uk/tgac/compgen/validator/PreferenceValidator.java" afterPath="$PROJECT_DIR$/src/main/java/ac/uk/tgac/compgen/validator/PreferenceValidator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ac/uk/tgac/compgen/model/SNPFile.java" afterPath="$PROJECT_DIR$/src/main/java/ac/uk/tgac/compgen/model/SNPFile.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ac/uk/tgac/compgen/controller/UploadController.java" afterPath="$PROJECT_DIR$/src/main/java/ac/uk/tgac/compgen/controller/UploadController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/ac/uk/tgac/compgen/model/UploadedFile.java" afterPath="$PROJECT_DIR$/src/main/java/ac/uk/tgac/compgen/model/UploadedFile.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/resources/css/styles.css" afterPath="$PROJECT_DIR$/src/main/webapp/resources/css/styles.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/uploadForm.jsp" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/uploadForm.jsp" />
-    </list>
+    <list default="true" id="430c5863-e09c-4d0a-8e4c-01a291bb87cc" name="Default" comment="" />
     <ignored path="PrimerSpringMVC.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -136,7 +128,7 @@
           <file leaf-file-name="SNPFile.java" pinned="false" current="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/java/ac/uk/tgac/compgen/model/SNPFile.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.789272" vertical-offset="930" max-vertical-offset="2934">
+                <state vertical-scroll-proportion="1.9770114" vertical-offset="0" max-vertical-offset="2934">
                   <caret line="90" column="13" selection-start-line="90" selection-start-column="0" selection-end-line="90" selection-end-column="0" />
                   <folding>
                     <element signature="imports" expanded="true" />
@@ -1090,7 +1082,7 @@
       <workItem from="1425143842601" duration="4822000" />
       <workItem from="1425295371999" duration="7851000" />
       <workItem from="1425321245905" duration="26000" />
-      <workItem from="1425375216760" duration="13037000" />
+      <workItem from="1425375216760" duration="13128000" />
     </task>
     <task id="LOCAL-00001" summary="*Updated the references. &#10;*Firsts attempts to add a interface for the preferences. &#10;*Removed the Markdown controller, as it is now used by all the pages. &#10;">
       <created>1424968627940</created>
@@ -1100,7 +1092,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="340624000" />
+    <option name="totallyTimeSpent" value="340715000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -1600,7 +1592,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ac/uk/tgac/compgen/model/SNPFile.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.789272" vertical-offset="930" max-vertical-offset="2934">
+        <state vertical-scroll-proportion="1.9770114" vertical-offset="0" max-vertical-offset="2934">
           <caret line="90" column="13" selection-start-line="90" selection-start-column="0" selection-end-line="90" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
