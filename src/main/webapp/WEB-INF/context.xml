@@ -7,7 +7,7 @@
             type="javax.sql.DataSource"
             username="root"
             driverClassName="com.mysql.jdbc.Driver"
-            url="jdbc:mysql://localhost:3306/polymarker"
+            url="jdbc:mysql://tgac-db1:3306/polymarker_data"
             maxActive="8"
             maxIdle="4"/>
 

@@ -4,7 +4,7 @@ target/
 
 #Databse in test envirnoment
 hibernate.cfg.xml
-*.tgac
+*.tgac*
 
 #OS
 .DS_Store
@@ -20,5 +20,6 @@ Thumbs.db
 *.war
 *.ear
 
+dataSources.xml
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*

@@ -10,12 +10,12 @@
             $(this).next("tr").toggle();
         });
 
-    }
+    };
 
     $.fn.show_all = function(){
         var element = this;
         $(element).find("tr.odd").next().show();
-    }
+    };
 
     $.fn.hide_all = function(){
         var element = this;
@@ -32,7 +32,9 @@
 
             var url = "get_mask?id="+id+"&marker="+value.id;
 
-            biojs.io.fasta.parse.read(url, function(seqs){
+            window.biojs.io.fasta.read(url, function(err,seqs){
+                console.log(err);
+                console.log(seqs);
                 if(seqs){
                     div_obj = document.getElementById(msa_div);
 

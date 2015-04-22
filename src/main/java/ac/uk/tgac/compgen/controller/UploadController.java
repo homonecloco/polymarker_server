@@ -92,7 +92,7 @@ public class UploadController {
         ModelAndView mv = new ModelAndView("uploadForm");
         mv.addObject("rendered_md", getMarkdown("Home") );
         mv.addObject("papers_md", getMarkdown("Papers") );
-        mv.addObject("reference", "Triticum_aestivum.IWGSC2.25.dna_sm.toplevel.fa");
+        mv.addObject("reference", "Triticum_aestivum.IWGSP1.21.dna_sm.genome.fa");
         mv.addObject("references", PreferenceValidator.getValidReferences());
         return  mv;
     }

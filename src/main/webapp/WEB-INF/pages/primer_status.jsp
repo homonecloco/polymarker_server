@@ -21,8 +21,9 @@
     <!--  <script type="text/javascript" src="js/msa.min.gz.js"></script>            -->
     <!--  <script src=//cdn.biojs-msa.org/msa/latest/msa.min.gz.js></script> -->
     <!-- TODO: Update to MSA 0.2 -->
-     <script src="http://cdn.biojs-msa.org/msa/0.2/msa.min.gz.js"></script>
-     <link type="text/css" rel="stylesheet" href="//cdn.biojs-msa.org/msa/0.2/msa.min.gz.css" />
+    <script src="https://wzrd.in/bundle/biojs-io-fasta@latest"></script>
+     <script src="https://cdn.biojs.net/msa/0.3/msa.min.gz.js"></script>
+     <link type="text/css" rel="stylesheet" href="https://cdn.biojs.net/msa/0.3/msa.min.gz.css" />
 
     <script>
         $(function() {

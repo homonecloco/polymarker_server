@@ -135,7 +135,7 @@
 							tableHTML += '<tr id="' + items[to_print[0]] + '"class="' + options.trClass + ' ' + oddOrEven + '">';
                             for(var i = 0; i < to_print.length; i++){
                                 var item = items[to_print[i]];
-                                console.log(item + " " + to_print[i]);
+                               // console.log(item + " " + to_print[i]);
                                 if( typeof(item) == 'undefined' ){
                                     item = "";
                                 }

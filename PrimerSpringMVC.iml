@@ -22,9 +22,11 @@
       <configuration>
         <datasource-map>
           <unit-entry name="src:main:webapp:WEB-INF:classes:hibernate.cfg.xml" value="31370d23-b6a2-4c37-8bcb-80e08e179e69" />
+          <unit-entry name="src:main:webapp:WEB-INF:hibernate.cfg.xml" />
         </datasource-map>
         <naming-strategy-map />
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/src/main/webapp/WEB-INF/classes/hibernate.cfg.xml" />
+        <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/src/main/webapp/WEB-INF/hibernate.cfg.xml" />
       </configuration>
     </facet>
   </component>

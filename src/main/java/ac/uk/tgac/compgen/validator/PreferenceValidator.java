@@ -22,7 +22,7 @@ public class PreferenceValidator implements Validator{
         validReferences = new LinkedHashMap<String, String>();
 
         validReferences.put("Triticum_aestivum.IWGSP1.21.dna_sm.genome.fa", "IWGSC1" );
-        validReferences.put("Triticum_aestivum.IWGSC2.25.dna_sm.toplevel.fa", "IWGSC2");
+       // validReferences.put("Triticum_aestivum.IWGSC2.25.dna_sm.toplevel.fa", "IWGSC2");
         validReferences.put("IWGSC_CSS_all_scaff_v1.fa", "IWGSC all");
     }
 
