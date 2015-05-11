@@ -57,10 +57,11 @@ public class SNP {
     }
 
     public SNP(String name, String chromosome, String sequence, SNPFile sf) {
-        this.name = name;
-        this.chromosome = chromosome;
+        this.name = name.replaceAll("\\s","");
+        this.chromosome = chromosome.replaceAll("\\s","");
+        this.sequence = sequence.replaceAll("\\s","");
         this.snpFile = sf;
-        this.sequence = sequence;
+
     }
 
     public String getName() {
